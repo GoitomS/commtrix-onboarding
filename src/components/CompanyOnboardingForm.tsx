@@ -82,7 +82,7 @@ const CompanyOnboardingForm: React.FC = () => {
                     helperText={formik.touched.lastName && formik.errors.lastName}
                 />
             </Grid>
-            <Grid sx={{width: "100%"}}>
+            <Grid sx={{width: "100%", textAlign: "left"}}>
                 <FormControl fullWidth
                 size="small" error={formik.touched.businessSize && Boolean(formik.errors.businessSize)}>
                     <InputLabel>Business Size</InputLabel>
