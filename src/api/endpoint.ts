@@ -1,8 +1,6 @@
-const API_URL = "http://localhost:3000/api";
-
 export const createCompany = async (data: any) => {
   try {
-    const response = await fetch(`${API_URL}/companies/addNewCompany`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/companies/addNewCompany`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
