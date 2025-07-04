@@ -13,26 +13,27 @@ import {
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { createCompany } from "../api/endpoint";
+import { states } from "../helper";
 // import {createCompany} from '../api/endpoints.ts'
 const formatPhoneNumber = (value: string) => {
-    const cleaned = value.replace(/\D/g, ''); // Remove all non-digit characters
-    const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
-    if (!match) return value;
-  
-    const [, area, prefix, line] = match;
-    return [area, prefix, line].filter(Boolean).join('-');
-  };
-  
+  const cleaned = value.replace(/\D/g, ""); // Remove all non-digit characters
+  const match = cleaned.match(/^(\d{0,3})(\d{0,3})(\d{0,4})$/);
+  if (!match) return value;
+
+  const [, area, prefix, line] = match;
+  return [area, prefix, line].filter(Boolean).join("-");
+};
+
 const validationSchema = yup.object({
   businessName: yup.string().required("Business Name is required"),
   email: yup
     .string()
     .email("Enter a valid email")
     .required("Email is required"),
-//   firstName: yup.string().required("First Name is required"),
-//   lastName: yup.string().required("Last Name is required"),
+  //   firstName: yup.string().required("First Name is required"),
+  //   lastName: yup.string().required("Last Name is required"),
   businessSize: yup.string().required("Business Size is required"),
-//   businessType: yup.string().required("Business Type is required"),
+  //   businessType: yup.string().required("Business Type is required"),
   agreeToTerms: yup
     .boolean()
     .oneOf([true], "You must accept the terms and conditions"),
@@ -48,21 +49,23 @@ const CompanyOnboardingForm: React.FC = () => {
       businessSize: "",
       businessType: "",
       agreeToTerms: false,
-      phone_number: '',
-    address: '',
-    city: '',
-    state: '',
-    zipcode: '',
-    country: 'United States',
+      phone_number: "",
+      address: "",
+      city: "",
+      state: "",
+      zipcode: "",
+      country: "United States",
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
       console.log(values);
-      await createCompany(values).then(res => {
-        console.log(res)
-      }).catch(err=>{
-        console.log(err)
-      })
+      await createCompany(values)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   });
 
@@ -71,7 +74,7 @@ const CompanyOnboardingForm: React.FC = () => {
       <Typography variant="h5" fontWeight={"bold"}>
         Start your 14 day Free trial
       </Typography>
-      
+
       <Grid sx={{ width: "100%" }}>
         <TextField
           fullWidth
@@ -101,75 +104,99 @@ const CompanyOnboardingForm: React.FC = () => {
         />
       </Grid>
       <Grid sx={{ width: "100%" }}>
-      <TextField
-  fullWidth
-  size="small"
-  id="phone_number"
-  name="phone_number"
-  label="Phone Number"
-  value={formik.values.phone_number}
-  onChange={(e) => {
-    const formatted = formatPhoneNumber(e.target.value);
-    formik.setFieldValue('phone_number', formatted);
-  }}
-  slotProps={{
-    input: {
-        startAdornment: <Typography fontSize={14} color="white" sx={{backgroundColor: "lightGrey", padding: "3px 5px", borderRadius: "3px", mr: "10px"}}>us</Typography>
-    }
-  }}
-/>
-</Grid>
-<Grid sx={{ width: "100%" }}>
-  <TextField
-    fullWidth
-    size="small"
-    id="address"
-    name="address"
-    label="Address"
-    value={formik.values.address}
-    onChange={formik.handleChange}
-  />
-</Grid>
-<Grid sx={{ width: "100%", display: "flex", gap: 1 }}>
-  <TextField
-    fullWidth
-    size="small"
-    id="city"
-    name="city"
-    label="City"
-    value={formik.values.city}
-    onChange={formik.handleChange}
-  />
-  <TextField
-    fullWidth
-    size="small"
-    id="state"
-    name="state"
-    label="State"
-    value={formik.values.state}
-    onChange={formik.handleChange}
-  />
-</Grid>
-<Grid sx={{ width: "100%", display: "flex", gap: 1 }}>
-  <TextField
-    fullWidth
-    size="small"
-    id="zipcode"
-    name="zipcode"
-    label="Zip Code"
-    value={formik.values.zipcode}
-    onChange={formik.handleChange}
-  />
-  <TextField
-    fullWidth
-    size="small"
-    id="country"
-    name="country"
-    label="Country"
-    value={formik.values.country}
-    onChange={formik.handleChange}
-  />
-</Grid>
+        <TextField
+          fullWidth
+          size="small"
+          id="phone_number"
+          name="phone_number"
+          label="Phone Number"
+          value={formik.values.phone_number}
+          onChange={(e) => {
+            const formatted = formatPhoneNumber(e.target.value);
+            formik.setFieldValue("phone_number", formatted);
+          }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <Typography
+                  fontSize={14}
+                  color="white"
+                  sx={{
+                    backgroundColor: "lightGrey",
+                    padding: "3px 5px",
+                    borderRadius: "3px",
+                    mr: "10px",
+                  }}
+                >
+                  us
+                </Typography>
+              ),
+            },
+          }}
+        />
+      </Grid>
+      <Grid sx={{ width: "100%" }}>
+        <TextField
+          fullWidth
+          size="small"
+          id="address"
+          name="address"
+          label="Address"
+          value={formik.values.address}
+          onChange={formik.handleChange}
+        />
+      </Grid>
+      <Grid sx={{ width: "100%", display: "flex", gap: 1 }}>
+        <TextField
+          fullWidth
+          size="small"
+          id="city"
+          name="city"
+          label="City"
+          value={formik.values.city}
+          onChange={formik.handleChange}
+        />
+
+        <FormControl fullWidth>
+          <InputLabel id="state">State</InputLabel>
+          <Select
+            fullWidth
+            size="small"
+            id="state"
+            name="state"
+            label="State"
+            value={formik.values.state}
+            onChange={formik.handleChange}
+          >
+            {states.map((option) => (
+              <MenuItem key={option.abbreviation} value={option.abbreviation}>
+                {option.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Grid>
+      <Grid sx={{ width: "100%", display: "flex", gap: 1 }}>
+        <TextField
+          fullWidth
+          size="small"
+          id="zipcode"
+          name="zipcode"
+          label="Zip Code"
+          value={formik.values.zipcode}
+          onChange={formik.handleChange}
+        />
+        <TextField
+          fullWidth
+          size="small"
+          id="country"
+          name="country"
+          label="Country"
+          value={formik.values.country}
+          onChange={formik.handleChange}
+          disabled
+        />
+      </Grid>
       <Grid
         sx={{ width: "100%", display: "flex", justifyContent: "center" }}
         gap={1}
@@ -256,7 +283,7 @@ const CompanyOnboardingForm: React.FC = () => {
             checked={formik.values.agreeToTerms}
             onChange={formik.handleChange}
           />
-          <label htmlFor="agreeToTerms" style={{  fontSize: "14px" }}>
+          <label htmlFor="agreeToTerms" style={{ fontSize: "14px" }}>
             * I have read and agree to the{" "}
             <a href="/privacy" target="_blank" rel="noopener noreferrer">
               Privacy Policy
@@ -273,7 +300,7 @@ const CompanyOnboardingForm: React.FC = () => {
         )}
       </FormControl>
       <Typography fontSize={13} color="success">
-       * required fields are marked with an asterisk.
+        * required fields are marked with an asterisk.
       </Typography>
       <Button
         variant="contained"

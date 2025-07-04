@@ -1,6 +1,6 @@
 export const createCompany = async (data: any) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/companies/addNewCompany`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/companies/addNewCompany`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
